@@ -1,7 +1,20 @@
-import { VStack, Box, StackDivider, Text, Link, FormControl, FormLabel, Input, Button } from '@chakra-ui/react'
+import { VStack, Text, Link, FormLabel, Input, Button, Box } from '@chakra-ui/react'
 import { MoonIcon } from '@chakra-ui/icons'
 
 export default function ContainerLogin() {
+  const user = {
+    usuario: 'john.doe@gmail.com', 
+    contraseña: 12345678
+  }
+
+  const clickSign = (e) => {
+    e.preventDefault();
+    if ((user.usuario == e.target.email.value) && (user.contraseña == e.target.password.value)) {
+      console.log('Usuario logueado correctamente')
+    } else {
+      console.log('Usuario o contraseña incorrecta')
+    }
+  }
 
   return (
     <VStack
@@ -13,17 +26,17 @@ export default function ContainerLogin() {
       <Text fontSize='1xl'>Don't have an account?{' '} 
         <Link color='teal.500'>Sign up</Link> 
       </Text>
-      
-        <FormControl bg='white' w={400} h='50vh' p={5}>
+      <Box bg='gray.100' p={10}>
+        <form onSubmit={(e) => clickSign(e)}>
           <FormLabel htmlFor='email' fontSize={14}>Email</FormLabel>
           <Input id='email' type='email'></Input>
           <FormLabel htmlFor='password' mt={4} fontSize={14}>Password</FormLabel>
-          <Input id='password' type='password' ></Input>
+          <Input id='password' type='password'></Input> 
           <Button mt={10} colorScheme='teal'type='submit' w='100%'>
             Sign in
           </Button>
-        </FormControl>
-      
+        </form>
+      </Box>
     </VStack>
       )
 }

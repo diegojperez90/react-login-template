@@ -1,11 +1,10 @@
-import { VStack, Text, Link, FormLabel, Input, Button, Box } from '@chakra-ui/react'
+import { VStack, Text, Link, FormLabel, Input, Button, Box, Tag } from '@chakra-ui/react'
 import { MoonIcon } from '@chakra-ui/icons'
 import { useState } from 'react';
 
 export default function ContainerLogin() {
 
   const [logueado, setLogueado] = useState({});
-  console.log(logueado);
 
   const clickSign = (e) => {
     e.preventDefault();
@@ -47,9 +46,13 @@ export default function ContainerLogin() {
             Sign in
           </Button>
         </form>
-        <Box>
-          { logueado.token && 'entraste' }
-          { logueado.error && 'error' }
+        <Box 
+          textTransform='uppercase'
+          display='flex'
+          justifyContent='center'
+          mt={10}>
+          { logueado.token && <Tag height='80px' fontSize='24px' colorScheme='green' variant='solid' size= 'lg'>Login exitoso</Tag> }
+          { logueado.error && <Tag colorScheme='red' variant='solid' size= 'lg'>{ logueado.error}</Tag> }
         </Box>
       </Box>
     </VStack>

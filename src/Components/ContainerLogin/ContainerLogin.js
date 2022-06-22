@@ -1,26 +1,36 @@
-import { VStack, Text, Link, FormLabel, Input, Button, Box } from '@chakra-ui/react'
+import { VStack, Text, Link, FormLabel, Input, Button, Box, Tag } from '@chakra-ui/react'
 import { MoonIcon } from '@chakra-ui/icons'
+import { useState } from 'react';
 
 export default function ContainerLogin() {
-  const user = {
-    usuario: 'john.doe@gmail.com', 
-    contraseña: 12345678
-  }
+
+  const [logueado, setLogueado] = useState({});
 
   const clickSign = (e) => {
     e.preventDefault();
-    if ((user.usuario == e.target.email.value) && (user.contraseña == e.target.password.value)) {
-      console.log('Usuario logueado correctamente')
-    } else {
-      console.log('Usuario o contraseña incorrecta')
-    }
+    const user =  JSON.stringify({
+      email: e.target.email.value,
+      password: e.target.password.value
+    });
+
+    fetch("https://reqres.in/api/login", {
+      method: 'POST', 
+      body: user,
+      headers: {
+        "content-type": "application/json"
+      }
+    })
+    .then(res => res.json())
+    .then(result => 
+      setLogueado(result)
+    )
   }
 
   return (
     <VStack
       bg='whitesmoke'
       p={5}
-    >
+    > 
       <MoonIcon w={40} h={10} color='blue'/>
       <Text fontSize='3xl'>Log in to your account</Text>
       <Text fontSize='1xl'>Don't have an account?{' '} 
@@ -36,7 +46,17 @@ export default function ContainerLogin() {
             Sign in
           </Button>
         </form>
+        <Box 
+          textTransform='uppercase'
+          display='flex'
+          justifyContent='center'
+          mt={10}>
+          { logueado.token && <Tag height='80px' fontSize='24px' colorScheme='green' variant='solid' size= 'lg'>Login exitoso</Tag> }
+          { logueado.error && <Tag colorScheme='red' variant='solid' size= 'lg'>{ logueado.error}</Tag> }
+        </Box>
       </Box>
     </VStack>
       )
 }
+
+
